@@ -1,12 +1,46 @@
+
 provider "aws" {
   region = "ap-northeast-2"
+}
+
+variable "vpc_name" {
+  description = "sol"  # export TF_VAR_vpc_name="test" 변수로 변경해보기 
+  type        = string
+  default     = "default"
+}
+
+locals {   
+  common_tags = {
+    Project = "Network2"       #서브넷 => 태그 변경 확인
+    Owner   = "sol"          #서브넷 => 태그 변경 확인     
+  }
+}
+
+output "vpc_name" {          
+  value = module.vpc.name
+}
+
+output "vpc_id" {
+  value = module.vpc.id
+}
+
+output "vpc_cidr" {
+  description = "생성된 VPC의 CIDR 영역"
+  value = module.vpc.cidr_block  
+}
+
+output "subnet_groups" {
+  value = {
+    public  = module.subnet_group__public   
+    private = module.subnet_group__private
+  }
 }
 
 module "vpc" {
   source  = "tedilabs/network/aws//modules/vpc"
   version = "0.24.0"
 
-  name                  = "sol" 
+  name                  = var.vpc_name
   cidr_block            = "10.0.0.0/16"
 
   internet_gateway_enabled = true
@@ -14,7 +48,7 @@ module "vpc" {
   dns_hostnames_enabled = true
   dns_support_enabled   = true
 
-  tags = {}
+  tags = local.common_tags
 }
 
 module "subnet_group__public" {
@@ -36,7 +70,7 @@ module "subnet_group__public" {
     }
   }
 
-  tags = {}
+  tags = local.common_tags
 }
 
 module "subnet_group__private" {
@@ -58,7 +92,7 @@ module "subnet_group__private" {
     }
   }
 
-  tags = {}
+  tags = local.common_tags
 }
 
 module "route_table__public" {
@@ -77,7 +111,7 @@ module "route_table__public" {
     },
   ]
 
-  tags = {}
+  tags = local.common_tags # 추가
 }
 
 module "route_table__private" {
@@ -91,5 +125,5 @@ module "route_table__private" {
 
   ipv4_routes = []
 
-  tags = {}
+  tags = local.common_tags
 }

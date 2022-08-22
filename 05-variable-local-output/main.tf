@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 variable "vpc_name" {
-  description = "생성되는 VPC의 이름"
+  description = "sol"
   type        = string
   default     = "default"
 }

@@ -1,3 +1,10 @@
+# ~/.terrafomrc 
+# plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
+
+# credentials "app.terraform.io" {
+#   token = "토큰 추가"
+# }
+
 terraform {
   backend "remote" {   #S3 =>remote
     hostname     = "app.terraform.io"

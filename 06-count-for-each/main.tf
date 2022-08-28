@@ -5,11 +5,11 @@ provider "aws" {
 /*
  * No count / for_each
  */
-resource "aws_iam_user" "user_1" {
+resource "aws_iam_user" "user_1" {  
   name = "user-1"
 }
 
-resource "aws_iam_user" "user_2" {
+resource "aws_iam_user" "user_2" {  
   name = "user-2"
 }
 
